@@ -1,0 +1,17 @@
+.row{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+}
+
+.child-div{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0,0,0,.125);
+  padding: 1rem;
+}
+
+.child-strong{
+  display: flex;
+  width: 100%;;
+}
