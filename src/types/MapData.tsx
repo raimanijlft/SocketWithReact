@@ -1,13 +1,16 @@
+import { ScatterDataPoint } from "chart.js";
+import Plot from "./Plot";
+
 export default class MapData{
     id:number;
-    data:any[];
+    data:Plot[];
     
-    constructor(id:number,data:any[]){
+    constructor(id:number,data:Plot[]){
         this.id = id;
         this.data = data;
     }
 
-    public addData(data:any){
-        this.data.push(data);
+    public addData(plot:Plot){
+        this.data.push(plot);
     }
 }

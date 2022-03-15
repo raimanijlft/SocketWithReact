@@ -1,4 +1,4 @@
-export default class SocketData{
+export default class DailyTemperature{
     id:number;
     temperature:number;
     timestamp:number;

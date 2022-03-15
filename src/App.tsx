@@ -1,7 +1,6 @@
-import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
-import { SocketDashboard } from './SocketDashboard';
+import  Dashboard  from './Dashboard';
 
 function App() {
   return (
@@ -10,7 +9,7 @@ function App() {
         <label><strong>WILIOT</strong></label>
         <p className='no-margin'><small>Test</small></p>
       </header>
-      <SocketDashboard title='React Socket with graphs'></SocketDashboard>
+      <Dashboard title='React Socket with graphs'></Dashboard>
     </div>
   );
 }
