@@ -13,5 +13,15 @@
 
 .child-strong{
   display: flex;
-  width: 100%;;
+  width: 100%;
+  min-width: 60px;
+}
+
+.chart-scroll{
+  max-width: 80%;
+  min-width: 80%;
+  margin: auto;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
 }

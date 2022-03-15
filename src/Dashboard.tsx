@@ -220,7 +220,7 @@ function Dashboard(props:DashboardProps){
     if(hasChartData){
 
       let chartDatasetOptions = {datasets:convertDatasetIntoMapPoints(chartOptionHandler.chartDatasets)};
-      return <Line data={chartDatasetOptions} options={chartOptionHandler.options}></Line>;
+      return <Line className = 'chart-scroll' data={chartDatasetOptions} options={chartOptionHandler.options}></Line>;
     }else{
       return <label> No chart data available currently</label>;
     }
