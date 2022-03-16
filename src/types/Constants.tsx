@@ -1,1 +1,0 @@
-export   const SOCKET_CONNECTION_URL = "ws://localhost:8999";
