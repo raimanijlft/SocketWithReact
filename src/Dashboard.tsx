@@ -43,8 +43,6 @@ function Dashboard() {
   const [hasChartData, setHasChartData] = React.useState(false);
   const stateRef = React.useRef(temperatureData);
   stateRef.current = temperatureData;
-  console.log(temperatureData.length);
-
   ChartJS.register(
     CategoryScale,
     LinearScale,

@@ -13,7 +13,7 @@ export function prepareChartData(
       let datasetObj: Dataset = dataMap.get(temperatureDataArray[i].id);
       if (temperatureDataArray[i].data <= 100) {
         datasetObj.addData({
-          x: temperatureDataArray[i].temperature,
+          x: new Date(temperatureDataArray[i].timestamp).toLocaleTimeString(),
           y: temperatureDataArray[i].data,
         });
       }
@@ -28,7 +28,9 @@ export function prepareChartData(
           temperatureDataArray[i].id.toString(),
           [
             {
-              x: temperatureDataArray[i].temperature,
+              x: new Date(
+                temperatureDataArray[i].timestamp
+              ).toLocaleTimeString(),
               y: temperatureDataArray[i].data,
             },
           ],
@@ -40,18 +42,15 @@ export function prepareChartData(
   }
 
   dataMap.forEach((data) => {
-    data.sortPlot();
     dataset.push(data);
   });
 
   let chartOptions = {
     scales: {
       x: {
-        display: true,
-        type: "linear",
+        display: false,
         title: {
-          display: true,
-          text: "Temp",
+          display: false,
         },
       },
       y: {

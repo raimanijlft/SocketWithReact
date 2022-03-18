@@ -20,6 +20,7 @@
 .chart-scroll {
   max-width: 80%;
   min-width: 80%;
+  max-height: 500px;
   margin: auto;
   display: flex;
   overflow-x: auto;

@@ -3,7 +3,7 @@ export class WebSocketHandler{
     constructor(ws:WebSocket){
         this.ws = ws;
     }
-
+    
     onOpen(callback:Function) {
         this.ws.onopen = evt =>{
             console.log("Websocket connection opened...");
