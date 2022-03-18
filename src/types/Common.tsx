@@ -1,6 +1,11 @@
 import ChartDataHandler from "./ChartDataHandler";
 import DailyTemperature from "./DailyTemperature";
-import Dataset from "./Dataset";
+import Dataset from "./TemperatureDataSet";
+
+export const SOCKET_CONNECTION_MESSAGE = "Web socket connected.";
+export const SOCKET_CONNECTION_ERROR_MESSAGE = "Web socket disconnected.";
+export const SOCKET_CONNECTION_CLOSE_MESSAGE =
+  "Error during web socket connection.";
 
 export function prepareChartData(
   temperatureDataArray: DailyTemperature[]
@@ -9,34 +14,33 @@ export function prepareChartData(
   let dataset: Dataset[] = [];
 
   for (var i = 0; i < temperatureDataArray.length; i++) {
-    if (dataMap.has(temperatureDataArray[i].id)) {
-      let datasetObj: Dataset = dataMap.get(temperatureDataArray[i].id);
-      if (temperatureDataArray[i].data <= 100) {
+    let currentTemperatureObj = temperatureDataArray[i];
+    if (dataMap.has(currentTemperatureObj.id)) {
+      let datasetObj: Dataset = dataMap.get(currentTemperatureObj.id);
+      if (currentTemperatureObj.data <= 100) {
         datasetObj.addData({
-          x: new Date(temperatureDataArray[i].timestamp).toLocaleTimeString(),
-          y: temperatureDataArray[i].data,
+          x: new Date(currentTemperatureObj.timestamp).toLocaleTimeString(),
+          y: currentTemperatureObj.data,
         });
       }
     } else {
-      if (temperatureDataArray[i].data <= 100) {
+      if (currentTemperatureObj.data <= 100) {
         let color = "red";
-        if (temperatureDataArray[i].id == 2) {
+        if (currentTemperatureObj.id == 2) {
           color = "orange";
         }
         let datasetObj: Dataset = new Dataset(
-          temperatureDataArray[i].id.toString(),
-          temperatureDataArray[i].id.toString(),
+          currentTemperatureObj.id.toString(),
+          currentTemperatureObj.id.toString(),
           [
             {
-              x: new Date(
-                temperatureDataArray[i].timestamp
-              ).toLocaleTimeString(),
-              y: temperatureDataArray[i].data,
+              x: new Date(currentTemperatureObj.timestamp).toLocaleTimeString(),
+              y: currentTemperatureObj.data,
             },
-          ],
-          color
+          ]
         );
-        dataMap.set(temperatureDataArray[i].id, datasetObj);
+        datasetObj.setColor(color);
+        dataMap.set(currentTemperatureObj.id, datasetObj);
       }
     }
   }

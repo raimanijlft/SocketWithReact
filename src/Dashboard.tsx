@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./Dashboard.css";
 import { WebSocketHandler } from "./services/WebSocketHandler";
 import DailyTemperature from "./types/DailyTemperature";
+import InfoBlockProps from "./types/InfoBlockProps";
 import "react-notifications-component/dist/theme.css";
 import { ReactNotifications } from "react-notifications-component";
 import { Store } from "react-notifications-component";
@@ -11,6 +12,9 @@ import {
   filterOlddata,
   processMessageResponse,
   displayNotification,
+  SOCKET_CONNECTION_MESSAGE,
+  SOCKET_CONNECTION_ERROR_MESSAGE,
+  SOCKET_CONNECTION_CLOSE_MESSAGE,
 } from "./types/Common";
 
 import {
@@ -27,21 +31,37 @@ import {
 import "chartjs-adapter-moment";
 import ChartDataHandler from "./types/ChartDataHandler";
 
+function InfoBlock(props: InfoBlockProps) {
+  return (
+    <div className="child-div">
+      <label>
+        <strong className="child-label"> ID {props.infoData.id} </strong>
+      </label>
+      <label>
+        <small className="child-label">
+          Temp: {props.infoData.temperature} C
+        </small>
+      </label>
+    </div>
+  );
+}
+
 function Dashboard() {
-  const [webSocketHandler, setWebSocketHandler] =
-    React.useState<WebSocketHandler>({} as WebSocketHandler);
-  const [dataTimeout, setDataTimeout] = React.useState(5 * 60 * 1000);
-  const [connectionTimeout, setConnectionTimeout] = React.useState(30 * 1000);
-  const [temperatureData, setTemperatureData] = React.useState<
-    DailyTemperature[]
-  >([] as DailyTemperature[]);
+  const [webSocketHandler, setWebSocketHandler] = useState<WebSocketHandler>(
+    {} as WebSocketHandler
+  );
+  const dataTimeout = 5 * 60 * 1000;
+  const connectionTimeout = 30 * 1000;
+  const [temperatureData, setTemperatureData] = useState<DailyTemperature[]>(
+    [] as DailyTemperature[]
+  );
   const [temperatureChartdata, setTemperatureChartData] =
-    React.useState<ChartDataHandler>({} as ChartDataHandler);
-  const [currentTemperatureData, setCurrentTemperatureData] = React.useState<
+    useState<ChartDataHandler>({} as ChartDataHandler);
+  const [currentTemperatureData, setCurrentTemperatureData] = useState<
     DailyTemperature[]
   >([] as DailyTemperature[]);
-  const [hasChartData, setHasChartData] = React.useState(false);
-  const stateRef = React.useRef(temperatureData);
+  const [hasChartData, setHasChartData] = useState(false);
+  const stateRef = useRef(temperatureData);
   stateRef.current = temperatureData;
   ChartJS.register(
     CategoryScale,
@@ -96,17 +116,12 @@ function Dashboard() {
     let currentWebSocketHandler = new WebSocketHandler(new WebSocket(url));
     setWebSocketHandler(currentWebSocketHandler);
     currentWebSocketHandler.onOpen((evt: Event) => {
-      displayNotification(
-        process.env.REACT_APP_SOCKET_CONNECTION_MESSAGE!,
-        "Info",
-        "success",
-        Store
-      );
+      displayNotification(SOCKET_CONNECTION_MESSAGE!, "Info", "success", Store);
     });
 
     currentWebSocketHandler.onError((evt: ErrorEvent) => {
       displayNotification(
-        process.env.REACT_APP_SOCKET_CONNECTION_ERROR_MESSAGE!,
+        SOCKET_CONNECTION_ERROR_MESSAGE!,
         "Error",
         "danger",
         Store
@@ -121,7 +136,7 @@ function Dashboard() {
 
     currentWebSocketHandler.onClose((evt: Event) => {
       displayNotification(
-        process.env.REACT_APP_SOCKET_CONNECTION_CLOSE_MESSAGE!,
+        SOCKET_CONNECTION_CLOSE_MESSAGE,
         "Info",
         "success",
         Store
@@ -136,30 +151,10 @@ function Dashboard() {
     if (currentTemperatureData && currentTemperatureData.length > 0) {
       return (
         <div className="row">
-          <div className="child-div">
-            <label>
-              <strong className="child-strong">
-                ID {currentTemperatureData[0].id}{" "}
-              </strong>
-            </label>
-            <label>
-              <small>Temp: {currentTemperatureData[0].temperature}</small>
-            </label>
-          </div>
-          <div className="child-div">
-            <label>
-              <strong className="child-strong">
-                ID {currentTemperatureData[1].id}{" "}
-              </strong>
-            </label>
-            <label>
-              <small>Temp: {currentTemperatureData[1].temperature}</small>
-            </label>
-          </div>
+          <InfoBlock infoData={currentTemperatureData[0]}></InfoBlock>
+          <InfoBlock infoData={currentTemperatureData[1]}></InfoBlock>
         </div>
       );
-    } else {
-      return <></>;
     }
   }
 

@@ -11,10 +11,10 @@
   padding: 1rem;
 }
 
-.child-strong {
+.child-label {
   display: flex;
   width: 100%;
-  min-width: 60px;
+  min-width: 65px;
 }
 
 .chart-scroll {
